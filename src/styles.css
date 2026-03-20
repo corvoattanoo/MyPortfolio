@@ -1,3 +1,111 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
-@import 'tailwindcss';
+@import "tailwindcss";
+
+* { scroll-behavior: smooth; }
+
+body {
+  background-color: #0f0f0f;
+  color: #e5e5e5;
+}
+
+.glow-border {
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.glow-border:hover {
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 20px rgba(99, 102, 241, 0.15);
+}
+
+.section-hidden {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.shape {
+  position: absolute;
+  border-radius: 9999px;
+  border: 2px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(2px);
+}
+
+.shape-1 {
+  width: 600px; height: 140px;
+  left: -5%; top: 20%;
+  background: linear-gradient(to right, rgba(99,102,241,0.4), transparent);
+  transform: rotate(12deg);
+  animation: floatShape1 12s ease-in-out infinite;
+}
+.shape-2 {
+  width: 500px; height: 120px;
+  right: 0; top: 75%;
+  background: linear-gradient(to right, rgba(244,63,94,0.4), transparent);
+  transform: rotate(-15deg);
+  animation: floatShape2 14s ease-in-out infinite 1s;
+}
+.shape-3 {
+  width: 300px; height: 80px;
+  left: 10%; bottom: 10%;
+  background: linear-gradient(to right, rgba(139,92,246,0.4), transparent);
+  transform: rotate(-8deg);
+  animation: floatShape1 10s ease-in-out infinite 0.5s;
+}
+.shape-4 {
+  width: 200px; height: 60px;
+  right: 20%; top: 15%;
+  background: linear-gradient(to right, rgba(245,158,11,0.4), transparent);
+  transform: rotate(20deg);
+  animation: floatShape2 16s ease-in-out infinite 2s;
+}
+.shape-5 {
+  width: 150px; height: 40px;
+  left: 25%; top: 10%;
+  background: linear-gradient(to right, rgba(6,182,212,0.4), transparent);
+  transform: rotate(-25deg);
+  animation: floatShape1 8s ease-in-out infinite 0.8s;
+}
+
+@keyframes floatShape1 {
+  0%, 100% { transform: rotate(12deg) translateY(0); }
+  50% { transform: rotate(12deg) translateY(15px); }
+}
+@keyframes floatShape2 {
+  0%, 100% { transform: rotate(-15deg) translateY(0); }
+  50% { transform: rotate(-15deg) translateY(-15px); }
+}
+.glow-card {
+  position: relative;
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #1a1a1a;
+  transition: border-color 0.3s;
+}
+
+.glow-card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  padding: 2px;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    transparent 20%,
+    #dd7bbb,
+    #d79f1e,
+    #5a922c,
+    #4c7894,
+    transparent 80%
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: var(--glow-opacity, 0);
+  transition: opacity 0.4s;
+}
+
