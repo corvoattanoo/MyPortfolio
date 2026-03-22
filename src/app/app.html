@@ -1,6 +1,8 @@
+<canvas id="beams-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
 <!-- NAVBAR -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-primary/80 backdrop-blur-md border-b border-white/5">
-  <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  [class.scrolled-nav]="activeSection !== 'hero'">
+  <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between transition-all duration-300">
     <span class="font-mono text-accent font-medium tracking-wider">yigit.dev</span>
     <div class="hidden md:flex gap-8 text-sm text-muted">
       <button *ngFor="let s of ['about','skills','projects','contact']"
@@ -51,10 +53,11 @@
       Backend / Full-Stack Developer building scalable APIs, real-time platforms, and containerized systems.
     </p>
     <div class="flex flex-wrap gap-4 justify-center">
-      <button (click)="scrollTo('projects')"
-        class="px-6 py-3 bg-accent hover:bg-indigo-500 text-white rounded-lg font-medium transition-all shadow-glow">
-        View Projects
-      </button>
+      <button (click)="scrollTo('projects')" class="liquid-metal-btn">
+  <span class="liquid-metal-bg"></span>
+  <span class="liquid-metal-inner"></span>
+  <span class="liquid-metal-text">View Projects</span>
+</button>
       <a href="https://github.com/corvoattanoo" target="_blank"
         class="px-6 py-3 glow-card rounded-lg text-white/50 hover:text-white transition-all">
         GitHub ↗
@@ -143,15 +146,21 @@
     <p class="text-muted mb-10 leading-relaxed">
       Open to internships, working student positions, and junior roles in Warsaw or remote.
     </p>
-    <a href="mailto:yigit.3f3@gmail.com"
-      class="inline-block px-8 py-4 bg-accent hover:bg-indigo-500 text-white rounded-xl font-medium transition-all shadow-glow hover:shadow-glow mb-12">
-      yigit.3f3@gmail.com
-    </a>
-    <div class="flex justify-center gap-8 text-muted text-sm">
-      <a href="https://github.com/corvoattanoo" target="_blank" class="hover:text-white transition-colors">GitHub ↗</a>
-      <a href="https://linkedin.com/in/yigit-efe-sozer" target="_blank" class="hover:text-white transition-colors">LinkedIn ↗</a>
-      <a href="https://medium.com/@yigit.3f3" target="_blank" class="hover:text-white transition-colors">Medium ↗</a>
-    </div>
+    <button onclick="window.location.href='mailto:yigit.3f3@gmail.com'" class="liquid-metal-btn mb-12">
+  <span class="liquid-metal-bg"></span>
+  <span class="liquid-metal-inner"></span>
+  <span class="liquid-metal-text">yigit.3f3@gmail.com</span>
+</button>
+    <div class="flex items-end justify-center gap-3 px-4 pb-3 h-16">
+  <a *ngFor="let item of dockItems"
+    [href]="item.link" [target]="item.target"
+    class="dock-item flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-all text-white"
+    [title]="item.label"
+    (mouseenter)="onDockHover($event)"
+    (mouseleave)="onDockLeave($event)">
+    <span [innerHTML]="item.icon"></span>
+  </a>
+</div>
   </div>
 </section>
 
