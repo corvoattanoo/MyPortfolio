@@ -1,11 +1,12 @@
-<canvas id="beams-canvas" style="position:fixed;inset:0;z-index:0;pointer-events:none;"></canvas>
+<canvas id="beams-canvas" style="position:fixed;inset:0;z-index:-1;pointer-events:none;"></canvas>
+<div class="scroll-progress" [style.width]="scrollProgress + '%'"></div>
 <!-- NAVBAR -->
 <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
   [class.scrolled-nav]="activeSection !== 'hero'">
   <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between transition-all duration-300">
     <span class="font-mono text-accent font-medium tracking-wider">yigit.dev</span>
     <div class="hidden md:flex gap-8 text-sm text-muted">
-      <button *ngFor="let s of ['about','skills','projects','contact']"
+      <button *ngFor="let s of ['about','skills','experience', 'projects','contact']"
         (click)="scrollTo(s)"
         [class.text-white]="activeSection === s"
         class="hover:text-white transition-colors capitalize">
@@ -68,7 +69,7 @@
 
 <!-- ABOUT -->
 <section id="about" class="py-32 px-6 observe">
-  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+  <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-16 items-center ">
     <div>
       <p class="text-accent font-mono text-sm mb-3">01. about</p>
       <h2 class="text-3xl md:text-4xl font-semibold mb-6">Building things that work at scale.</h2>
@@ -109,6 +110,113 @@
           </span>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+<!-- EXPERIENCE TIMELINE -->
+<!-- EXPERIENCE TIMELINE -->
+<section id="experience" class="py-32 px-6 observe">
+  <div class="max-w-5xl mx-auto">
+    <p class="text-accent font-mono text-sm mb-3">05. experience</p>
+    <h2 class="text-3xl md:text-4xl font-semibold mb-4">Journey so far.</h2>
+    <p class="text-muted mb-16 text-sm">From student to builder — here's how it unfolded.</p>
+
+    <div class="flex gap-16">
+
+      <!-- LEFT: Cards -->
+      <div class="flex-1 flex flex-col gap-4" #cardList>
+
+        <div *ngFor="let exp of experiences; let i = index"
+          class="spotlight-card exp-card p-5 cursor-pointer transition-all duration-300 border"
+          [class.active-exp]="activeExp === i"
+          
+          [style.border-color]="activeExp === i ? exp.color + '60' : 'rgba(255,255,255,0.06)'"
+          [style.background]="activeExp === i ? exp.color + '08' : '#0f0f0f'">
+
+          <div class="flex items-start gap-4">
+            <div class="w-2 h-2 rounded-full mt-2 flex-shrink-0 transition-all duration-300"
+              [style.background]="exp.color"
+              [style.box-shadow]="activeExp === i ? '0 0 10px ' + exp.color : 'none'">
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-1 flex-wrap">
+                <span class="font-mono text-xs" [style.color]="exp.color">{{exp.period}}</span>
+                <span *ngIf="exp.active"
+                  class="text-xs px-2 py-0.5 rounded-full border"
+                  [style.color]="exp.color"
+                  [style.border-color]="exp.color + '50'"
+                  [style.background]="exp.color + '15'">
+                  Active
+                </span>
+              </div>
+              <h3 class="font-semibold text-sm mb-0.5">{{exp.title}}</h3>
+              <p class="text-muted text-xs">{{exp.company}}</p>
+
+              <!-- Expanded content -->
+              <div class="overflow-hidden transition-all duration-500"
+                [style.max-height]="activeExp === i ? '300px' : '0'"
+                [style.opacity]="activeExp === i ? '1' : '0'">
+                <p class="text-muted text-xs leading-relaxed mt-3">{{exp.description}}</p>
+                <div class="flex flex-wrap gap-1.5 mt-3">
+                  <span *ngFor="let t of exp.stack"
+                    class="text-xs px-2 py-0.5 rounded border"
+                    [style.color]="exp.color"
+                    [style.border-color]="exp.color + '30'"
+                    [style.background]="exp.color + '10'">
+                    {{t}}
+                  </span>
+                </div>
+                <a *ngIf="exp.link" [href]="exp.link" target="_blank"
+                  class="inline-block text-xs mt-3 hover:opacity-80 transition-opacity"
+                  [style.color]="exp.color">
+                  {{exp.linkLabel}} ↗
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT: Sticky image/preview -->
+      <div class="hidden lg:block w-96 flex-shrink-0">
+        <div class="sticky top-28">
+          <div class="rounded-2xl overflow-hidden border border-white/8 bg-card aspect-video relative">
+
+            <!-- Image -->
+            <img *ngIf="experiences[activeExp]?.image"
+  [src]="experiences[activeExp]?.image"
+  [alt]="experiences[activeExp]?.title"
+  class="w-full h-full object-cover transition-all duration-700 ease-in-out"
+  (error)="onImgError($event)">
+
+            <!-- Placeholder for no image -->
+            <div *ngIf="!experiences[activeExp]?.image"
+              class="w-full h-full flex items-center justify-center"
+              [style.background]="experiences[activeExp]?.color + '15'">
+              <div class="text-center">
+                <div class="text-4xl mb-2">{{experiences[activeExp]?.emoji}}</div>
+                <p class="text-muted text-xs font-mono">{{experiences[activeExp]?.company}}</p>
+              </div>
+            </div>
+
+            <!-- Overlay gradient -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+
+            <!-- Bottom label -->
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <p class="text-white text-sm font-semibold">{{experiences[activeExp]?.title}}</p>
+              <p class="text-white/60 text-xs">{{experiences[activeExp]?.company}}</p>
+            </div>
+          </div>
+
+          <!-- Color accent bar -->
+          <div class="h-1 rounded-full mt-3 transition-all duration-500"
+            [style.background]="'linear-gradient(to right, ' + experiences[activeExp]?.color + ', transparent)'">
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>

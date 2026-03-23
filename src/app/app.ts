@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, HostListener, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -11,9 +11,11 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent implements OnInit {
+  scrollProgress = 0;
   activeSection = 'hero';
   menuOpen = false;
-  constructor(private sanitizer: DomSanitizer) {}
+  timelineProgress = 0;
+  constructor(private sanitizer: DomSanitizer, private cdr: ChangeDetectorRef) {}
   dockItems: { label: string; link: string; target: string; icon: SafeHtml }[] = [];
   projects = [
     {
@@ -38,7 +40,91 @@ export class AppComponent implements OnInit {
       featured: false
     }
   ];
+  activeExp = 0;
+
+experiences = [
+  {
+    period: '2022 – Present',
+    title: 'BSc Computer Science',
+    company: 'AEH Warsaw — Web Development',
+    description: 'Web Development specialization. Built foundational knowledge in algorithms, databases, and software engineering while working on real-world projects alongside studies.',
+    stack: ['PHP', 'JavaScript', 'MySQL', 'Linux', 'Git'],
+    color: '#6366f1',
+    image: '/assets/AEH_image.jpg',
+    emoji: '🎓',
+    link: null,
+    linkLabel: null,
+    active: true
+  },
+  {
+    period: '2024',
+    title: 'CampSphere',
+    company: 'Personal Project — Full-Stack',
+    description: 'Full-stack campground listing platform with interactive Mapbox maps, Cloudinary image storage, and session-based authentication. First major end-to-end project.',
+    stack: ['Node.js', 'Express', 'MongoDB', 'Mapbox', 'Cloudinary'],
+    color: '#3b82f6',
+    images: ['/assets/campSphere.png', '/assets/campSphereLandingPage.png'],
+    image: '/assets/campSphere.png',
+    emoji: '🏕️',
+    link: 'https://github.com/corvoattanoo/CampApp',
+    linkLabel: 'github.com/corvoattanoo/CampApp',
+    active: false
+  },
+  {
+    period: '2025 – Present',
+    title: 'Web Administrator Intern',
+    company: 'Alzam Digital',
+    description: 'Maintaining a production LMS integrating Moodle and WordPress. Responsible for server configuration, database management, and troubleshooting live web platform issues.',
+    stack: ['Linux', 'Moodle', 'WordPress', 'MySQL', 'Nginx'],
+    color: '#8b5cf6',
+    image: null,
+    emoji: '💼',
+    link: null,
+    linkLabel: null,
+    active: true
+  },
+  {
+    period: '2025 – Present',
+    title: 'MightyInvest',
+    company: 'Personal Project — SaaS Platform',
+    description: 'Real-time stock market analytics platform with API-First architecture. Reduced DB load by ~70% through live data streaming. Full containerized deployment.',
+    stack: ['Laravel', 'Angular', 'PostgreSQL', 'Redis', 'Docker', 'Nginx'],
+    color: '#06b6d4',
+    image: 'assets/MightyInvestProjectPhoto.png',
+    emoji: '📈',
+    link: 'https://github.com/corvoattanoo/mightyinvest',
+    linkLabel: 'github.com/corvoattanoo/mightyinvest',
+    active: true
+  },
+  {
+    period: '2025 – Present',
+    title: 'Full-Stack Developer & IT Representative',
+    company: 'WisdomKids',
+    description: "Children's education platform combining live lessons, games, and real teachers. Leading technical meetings with external IT team and driving full-stack development including custom Moodle LMS, student/parent tracking systems.",
+    stack: ['Laravel', 'Angular', 'Moodle', 'PHP', 'MySQL', 'Docker'],
+    color: '#10b981',
+    image: '/assets/wisdomkidsProject.png',
+    emoji: '🎓',
+    link: 'https://my.wisdomkids.online',
+    linkLabel: 'my.wisdomkids.online',
+    active: true
+  },
+];
   
+slideIndex = 0;
+private slideInterval: any;
+
+startSlideshow(images: string[]) {
+  clearInterval(this.slideInterval);
+  this.slideIndex = 0;
+  if (images && images.length > 1) {
+    this.slideInterval = setInterval(() => {
+      this.slideIndex = (this.slideIndex + 1) % images.length;
+      const exp = this.experiences[this.activeExp];
+      if (exp.images) exp.image = exp.images[this.slideIndex];
+    }, 2500);
+  }
+}
 
 onDockHover(e: MouseEvent) {
   const item = e.currentTarget as HTMLElement;
@@ -153,6 +239,14 @@ onDockLeave(e: MouseEvent) {
   ];
 
   ngOnInit() {
+    const cards = document.querySelectorAll('.spotlight-card');
+cards.forEach((card, i) => {
+  const rect = card.getBoundingClientRect();
+  const middle = window.innerHeight / 2;
+  if (rect.top <= middle && rect.bottom >= middle) {
+    this.activeExp = i;
+  }
+});
     this.initBeams();
     this.dockItems = [
     {
@@ -186,6 +280,60 @@ onDockLeave(e: MouseEvent) {
       icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>`)
     },
   ];
+  document.addEventListener('mousemove', (e) => {
+  document.querySelectorAll('.spotlight-card').forEach((card: any) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    card.style.setProperty('--mouse-x', `${x}px`);
+    card.style.setProperty('--mouse-y', `${y}px`);
+
+    // Canvas dot pattern
+    let canvas = card.querySelector('.spotlight-canvas') as HTMLCanvasElement;
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.className = 'spotlight-canvas';
+      canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;border-radius:inherit;';
+      card.prepend(canvas);
+    }
+
+    const isInside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+    if (!isInside) {
+      const ctx = canvas.getContext('2d')!;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
+
+    canvas.width = rect.width;
+    canvas.height = rect.height;
+    const ctx = canvas.getContext('2d')!;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const dotSize = 2;
+    const gap = 4;
+    const radius = 180;
+
+    for (let dx = 0; dx < canvas.width; dx += gap) {
+      for (let dy = 0; dy < canvas.height; dy += gap) {
+        const dist = Math.hypot(dx - x, dy - y);
+        if (dist < radius) {
+          const alpha = (1 - dist / radius) * 0.8;
+          const colorRand = Math.random();
+          if (colorRand > 0.7) {
+            ctx.fillStyle = `rgba(99,102,241,${alpha})`;
+          } else if (colorRand > 0.4) {
+            ctx.fillStyle = `rgba(139,92,246,${alpha})`;
+          } else {
+            ctx.fillStyle = `rgba(59,130,246,${alpha})`;
+          }
+          ctx.beginPath();
+          ctx.arc(dx, dy, dotSize / 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+  });
+});
   setTimeout(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -230,16 +378,38 @@ onDockLeave(e: MouseEvent) {
   }
 
   @HostListener('window:scroll')
-  onScroll() {
-    const sections = ['hero', 'about', 'skills', 'projects', 'contact'];
-    for (const id of sections) {
-      const el = document.getElementById(id);
-      if (el) {
-        const rect = el.getBoundingClientRect();
-        if (rect.top <= 100 && rect.bottom >= 100) {
-          this.activeSection = id;
-        }
+onScroll() {
+  const sections = ['hero', 'about', 'skills', 'experience', 'projects', 'contact'];
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 100 && rect.bottom >= 100) {
+        this.activeSection = id;
+        
       }
     }
   }
+
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  this.scrollProgress = (window.scrollY / docHeight) * 100;
+
+  // Experience cards auto-select on scroll
+  const expCards = document.querySelectorAll('.exp-card');
+  expCards.forEach((card, i) => {
+    const rect = card.getBoundingClientRect();
+    const middle = window.innerHeight / 2;
+    if (rect.top <= middle && rect.bottom >= middle) {
+     
+      this.activeExp = i;
+this.startSlideshow(this.experiences[i].images || []);
+this.cdr.detectChanges();
+    }
+  });
+  
+}
+onImgError(e: any) {
+  console.log('Image error:', e.target.src);
+}
+
 }
