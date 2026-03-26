@@ -19,16 +19,14 @@
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
-  {
-    "glob": "**/*",
-    "input": "src/assets",
-    "output": "assets"
-  },
-  "src/favicon.ico"
-],
-            "styles": [
-              "src/styles.css"
-            ]
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "assets"
+              },
+              "src/favicon.ico"
+            ],
+            "styles": ["src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -68,6 +66,9 @@
         },
         "test": {
           "builder": "@angular/build:unit-test"
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy"
         }
       }
     }
