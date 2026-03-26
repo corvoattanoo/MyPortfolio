@@ -1,0 +1,2 @@
+run: ng build --base-href /yigit.dev/
+publish_dir: ./dist/yigit.dev/browser

@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "MyPortfolio": {
+    "yigit.dev": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -17,6 +17,7 @@
           "builder": "@angular/build:application",
           "options": {
             "browser": "src/main.ts",
+            "outputPath": "dist/yigit.dev",
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -56,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "MyPortfolio:build:production"
+              "buildTarget": "yigit.dev:build:production"
             },
             "development": {
-              "buildTarget": "MyPortfolio:build:development"
+              "buildTarget": "yigit.dev:build:development"
             }
           },
           "defaultConfiguration": "development"
