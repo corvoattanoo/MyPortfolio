@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "yigit.dev": {
+  "MyPortfolio": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -57,10 +57,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "yigit.dev:build:production"
+              "buildTarget": "MyPortfolio:build:production"
             },
             "development": {
-              "buildTarget": "yigit.dev:build:development"
+              "buildTarget": "MyPortfolio:build:development"
             }
           },
           "defaultConfiguration": "development"
