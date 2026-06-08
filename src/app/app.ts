@@ -71,7 +71,7 @@ experiences = [
     active: false
   },
   {
-    period: '2025 – Present',
+    period: '2025',
     title: 'Web Administrator Intern',
     company: 'Alzam Digital',
     description: 'Maintaining a production LMS integrating Moodle and WordPress. Responsible for server configuration, database management, and troubleshooting live web platform issues.',
@@ -93,12 +93,12 @@ experiences = [
     images: ['assets/MightyInvestProjectPic.png', 'assets/MightyInvestMarketPage.png', 'assets/MightyInvestPortfolioPage.png', 'assets/MightyInvestNews10.png'],
     image: 'assets/MightyInvestProjectPic.png',
     emoji: '📈',
-    link: 'https://github.com/corvoattanoo/mightyinvest',
-    linkLabel: 'github.com/corvoattanoo/mightyinvest',
+    link: 'https://mightyinvest.online/',
+    linkLabel: 'mightyinvest.online',
     active: true
   },
   {
-    period: '2025 – Present',
+    period: '2025 ',
     title: 'Full-Stack Developer & IT Representative',
     company: 'WisdomKids',
     description: "Children's education platform combining live lessons, games, and real teachers. Leading technical meetings with external IT team and driving full-stack development including custom Moodle LMS, student/parent tracking systems.",
@@ -108,7 +108,7 @@ experiences = [
     emoji: '🎓',
     link: 'https://my.wisdomkids.online',
     linkLabel: 'my.wisdomkids.online',
-    active: true
+    active: false
   },
 ];
   
@@ -233,10 +233,11 @@ onDockLeave(e: MouseEvent) {
 }
 
   skills = [
-    { label: 'Backend', items: ['Laravel', 'Node.js', 'Express.js', 'REST API'] },
-    { label: 'Frontend', items: ['Angular', 'RxJS', 'TypeScript', 'HTML/CSS'] },
-    { label: 'Database', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'] },
-    { label: 'DevOps', items: ['Docker', 'Nginx', 'Linux', 'AWS EC2'] },
+    { label: 'Backend', items: ['PHP', 'Laravel', 'Sanctum', 'REST API Design', 'Queue Worker', 'Node.js', 'Express.js', 'Nginx'] },
+    { label: 'Frontend', items: ['Angular 17+', 'TypeScript', 'RxJS', 'HTML5', 'CSS3'] },
+    { label: 'Database & Cache', items: ['PostgreSQL', 'MySQL', 'MongoDB', 'Redis'] },
+    { label: 'Auth & Security', items: ['OTP', '2FA', 'Email Verification', 'Token-based Authentication'] },
+    { label: 'DevOps & Infra', items: ['Docker', 'Docker Compose', 'Nginx', 'Linux', 'AWS EC2', 'AWS S3', 'Cloudflare Workers', 'GitHub', 'Webhooks'] },
   ];
 
   ngOnInit() {
@@ -276,7 +277,7 @@ cards.forEach((card, i) => {
     },
     {
       label: 'Download CV',
-      link: 'assets/Yigit_Efe_Sozer_CV.pdf',
+      link: 'assets/Yigit_Sozer_CV.pdf',
       target: '_blank',
       icon: this.sanitizer.bypassSecurityTrustHtml(`<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>`)
     },
